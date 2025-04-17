@@ -8,5 +8,6 @@ abstract class SearchScreenState with _$SearchScreenState {
   const factory SearchScreenState({
     @Default(<Image>[]) List<Image> images,
     @Default(false) bool isLoading,
+    String? errorMessage,
   }) = _SearchScreenState;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:image_finder/core/result/result.dart';
 import 'package:image_finder/data/model/image.dart';
 import 'package:image_finder/domain/use_case/get_image_use_case.dart';
 import 'package:image_finder/presentation/search_screen/search_screen_state.dart';
@@ -17,12 +18,19 @@ class SearchScreenViewModel with ChangeNotifier {
 
   bool get isLoading => state.isLoading;
 
-  Future<void> getImageUseCase(String prompt) async {
-    _state = state.copyWith(isLoading: true);
+  String? get errorMessage => state.errorMessage;
+
+  void getImageUseCase(String prompt) async {
+    _state = state.copyWith(isLoading: true, errorMessage: null);
     notifyListeners();
 
-    await _getImageUseCase.execute(prompt);
-    _state = state.copyWith(isLoading: false);
+    final result = await _getImageUseCase.execute(prompt);
+    switch (result) {
+      case Success<List<Image>, String>():
+        _state = _state.copyWith(isLoading: false, images: result.data);
+      case Error<List<Image>, String>():
+        _state = _state.copyWith(isLoading: true, errorMessage: result.error);
+    }
     notifyListeners();
   }
 }
