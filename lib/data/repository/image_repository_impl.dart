@@ -20,4 +20,15 @@ class ImageRepositoryImpl implements ImageRepository {
       return Result.error(e.toString());
     }
   }
+
+  @override
+  Future<Result<Image, String>> getImagesById(int id) async {
+    try {
+      final imageDto = await _imageDataSource.getImagesById(id);
+      final image = imageDto.toImage();
+      return Result.success(image);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
 }

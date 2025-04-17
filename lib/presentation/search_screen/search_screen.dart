@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_finder/presentation/search_screen/search_screen_view_model.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -15,8 +16,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    widget.screenViewModel.getImageUseCase();
     super.initState();
+    widget.screenViewModel.getImageUseCase();
   }
 
   @override
@@ -74,7 +75,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemBuilder: (context, index) {
                           final image = state.images[index];
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              context.push('/detail-screen/${image.id}');
+                            },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.network(

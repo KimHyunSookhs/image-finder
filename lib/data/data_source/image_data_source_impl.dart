@@ -25,4 +25,20 @@ class ImageDataSourceImpl implements ImageDataSource {
       return throw (e);
     }
   }
+
+  @override
+  Future<ImageDto> getImagesById(int id) async {
+    final response = await http.get(Uri.parse(baseUrl));
+
+    try {
+      final List decodedData = jsonDecode(response.body)['hits'];
+      final List<ImageDto> images =
+          decodedData.map((e) => ImageDto.fromJson(e)).toList();
+
+      final result = images.firstWhere((element) => element.id == id);
+      return result;
+    } catch (e) {
+      return throw Exception(e);
+    }
+  }
 }
