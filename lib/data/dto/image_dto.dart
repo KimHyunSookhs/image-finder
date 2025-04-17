@@ -3,10 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'image_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class  ImageDto{
+class ImageDto {
   final num? id;
   final String? pageURL;
   final String? type;
+  @JsonKey(fromJson: _parseTags, toJson: _joinTags)
   final List<String>? tags;
   final String? previewURL;
   final num? previewWidth;
@@ -28,30 +29,37 @@ class  ImageDto{
   final String? userImageURL;
 
   const ImageDto(
-      this.id,
-  this.pageURL,
-  this.type,
-  this.tags,
-  this.previewURL,
-  this.previewWidth,
-  this.previewHeight,
-  this.webformatURL,
-  this.webformatWidth,
-  this.webformatHeight,
-  this.largeImageURL,
-  this.imageWidth,
-  this.imageHeight,
-  this.imageSize,
-  this.views,
-  this.downloads,
-  this.collections,
-  this.likes,
-  this.comments,
-  this.user_id,
-  this.user,
-  this.userImageURL);
-  
-  factory ImageDto.fromJson(Map<String, dynamic> json) => _$ImageDtoFromJson(json);
-  
+    this.id,
+    this.pageURL,
+    this.type,
+    this.tags,
+    this.previewURL,
+    this.previewWidth,
+    this.previewHeight,
+    this.webformatURL,
+    this.webformatWidth,
+    this.webformatHeight,
+    this.largeImageURL,
+    this.imageWidth,
+    this.imageHeight,
+    this.imageSize,
+    this.views,
+    this.downloads,
+    this.collections,
+    this.likes,
+    this.comments,
+    this.user_id,
+    this.user,
+    this.userImageURL,
+  );
+
+  factory ImageDto.fromJson(Map<String, dynamic> json) =>
+      _$ImageDtoFromJson(json);
+
   Map<String, dynamic> toJson() => _$ImageDtoToJson(this);
+
+  static List<String> _parseTags(String? value) =>
+      value?.split(',').map((e) => e.trim()).toList() ?? [];
+
+  static String _joinTags(List<String>? tags) => tags?.join(', ') ?? '';
 }
