@@ -7,6 +7,7 @@ extension ImageMapper on ImageDto {
       id: id?.toInt() ?? 0,
       pageURL: pageURL ?? 'No URL',
       tags: tags ?? '',
+      user: user ?? '',
       largeImageUrl: largeImageURL ?? '',
       previewImageUrl: previewURL ?? '',
     );

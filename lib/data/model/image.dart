@@ -7,6 +7,7 @@ part 'image.g.dart';
 abstract class Image with _$Image {
   const factory Image({
     required int id,
+    required String user,
     required String pageURL,
     required String tags,
     required String previewImageUrl,
