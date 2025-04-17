@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_finder/presentation/search_screen/search_screen.dart';
 
 void main() {
   runApp(const ImageFinder());
@@ -9,8 +10,6 @@ class ImageFinder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SearchScreen());
   }
 }
-
-
