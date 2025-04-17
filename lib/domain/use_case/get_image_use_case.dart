@@ -8,7 +8,7 @@ class GetImageUseCase {
   GetImageUseCase({required ImageRepository imageRepository})
     : _imageRepository = imageRepository;
 
-  Future<Result<List<Image>, String>> execute(String prompt) async {
-    return await _imageRepository.getImages(prompt);
+  Future<Result<List<Image>, String>> execute() async {
+    return await _imageRepository.getImages();
   }
 }

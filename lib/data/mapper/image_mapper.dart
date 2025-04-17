@@ -6,7 +6,9 @@ extension ImageMapper on ImageDto {
     return Image(
       id: id?.toInt() ?? 0,
       pageURL: pageURL ?? 'No URL',
-      tags: tags ?? [],
+      tags: tags ?? '',
+      largeImageUrl: largeImageURL ?? '',
+      previewImageUrl: previewURL ?? '',
     );
   }
 }

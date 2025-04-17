@@ -20,11 +20,11 @@ class SearchScreenViewModel with ChangeNotifier {
 
   String? get errorMessage => state.errorMessage;
 
-  void getImageUseCase(String prompt) async {
+  void getImageUseCase() async {
     _state = state.copyWith(isLoading: true, errorMessage: null);
     notifyListeners();
 
-    final result = await _getImageUseCase.execute(prompt);
+    final result = await _getImageUseCase.execute();
     switch (result) {
       case Success<List<Image>, String>():
         _state = _state.copyWith(isLoading: false, images: result.data);

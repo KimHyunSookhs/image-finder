@@ -15,6 +15,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
+    widget.screenViewModel.getImageUseCase();
     super.initState();
   }
 
@@ -52,12 +53,41 @@ class _SearchScreenState extends State<SearchScreen> {
                     suffixIcon: Icon(Icons.search, color: Colors.green),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 ListenableBuilder(
                   listenable: widget.screenViewModel,
                   builder: (context, child) {
                     final state = widget.screenViewModel.state;
-                    return Center(child: Text('aa'));
+                    if (state.isLoading == true) {
+                      return CircularProgressIndicator();
+                    } else if (state.isLoading == false) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.images.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 34,
+                              crossAxisSpacing: 36,
+                            ),
+                        itemBuilder: (context, index) {
+                          final image = state.images[index];
+                          return InkWell(
+                            onTap: () {},
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                image.previewImageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(child: Text(''));
+                    }
                   },
                 ),
               ],

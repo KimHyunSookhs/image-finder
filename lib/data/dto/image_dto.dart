@@ -7,8 +7,7 @@ class ImageDto {
   final num? id;
   final String? pageURL;
   final String? type;
-  @JsonKey(fromJson: _parseTags, toJson: _joinTags)
-  final List<String>? tags;
+  final String? tags;
   final String? previewURL;
   final num? previewWidth;
   final num? previewHeight;
@@ -57,9 +56,4 @@ class ImageDto {
       _$ImageDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ImageDtoToJson(this);
-
-  static List<String> _parseTags(String? value) =>
-      value?.split(',').map((e) => e.trim()).toList() ?? [];
-
-  static String _joinTags(List<String>? tags) => tags?.join(', ') ?? '';
 }
