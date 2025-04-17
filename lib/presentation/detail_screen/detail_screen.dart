@@ -37,15 +37,32 @@ class _DetailScreenState extends State<DetailScreen> {
                 builder: (context, child) {
                   final state = widget.detailScreenViewModel.state;
                   if (state.isLoading == true) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   } else if (state.image.largeImageUrl.isEmpty) {
                     return Text('이미지 정보 없음');
                   } else {
                     return Column(
                       children: [
                         Image.network(
-                          state.image.largeImageUrl,
+                          widget
+                              .detailScreenViewModel
+                              .state
+                              .image
+                              .largeImageUrl,
                           fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          '${state.image.user}님의 이미지',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            state.image.tags,
+                            style: TextStyle(fontSize: 18),
+                            maxLines: 5,
+                          ),
                         ),
                       ],
                     );
