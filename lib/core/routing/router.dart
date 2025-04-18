@@ -24,20 +24,25 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/detail-screen/:id',
+      path: Routes.detailScreen,
       builder: (context, state) {
-        final idParam = state.pathParameters['id'];
-        if (idParam == null) {
-          return const Scaffold(body: Center(child: Text('ID가 없습니다')));
+        final idString = state.pathParameters['id'];
+
+        // id가 없거나 잘못된 형식일 경우 예외 처리
+        if (idString == null) {
+          return const Scaffold(body: Center(child: Text('ID가 제공되지 않았습니다.')));
         }
 
-        final id = int.tryParse(idParam);
+        // id가 숫자로 변환될 수 있는지 확인
+        final id = int.tryParse(idString);
         if (id == null) {
-          return const Scaffold(body: Center(child: Text('ID 형식이 잘못되었습니다')));
+          return const Scaffold(body: Center(child: Text('ID 형식이 잘못되었습니다.')));
         }
+
         final viewModel = DetailScreenViewModel(getImageByIdUseCase: getIt());
         return DetailScreen(detailScreenViewModel: viewModel, id: id);
       },
-    ),
+    )
+
   ],
 );
