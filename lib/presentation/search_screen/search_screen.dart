@@ -14,10 +14,21 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController queryTextController = TextEditingController();
 
+  void _searchImages(String query) {
+    if (query.isNotEmpty) {
+      widget.screenViewModel.searchImageUseCase(query);
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
-    widget.screenViewModel.getImageUseCase();
+    final keyWord = widget.screenViewModel.state.currentKeyword;
+    queryTextController = TextEditingController(text: keyWord.isNotEmpty? keyWord : null);
+    if (keyWord.isNotEmpty) {
+      _searchImages(keyWord);
+    }
   }
 
   @override
@@ -43,9 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     TextField(
                       controller: queryTextController,
                       onSubmitted: (value) {
-                        widget.screenViewModel.searchImageUseCase(
-                          queryTextController.text,
-                        );
+                       _searchImages(value);
                       },
                       textAlignVertical: TextAlignVertical.center,
                       decoration: InputDecoration(
@@ -88,7 +97,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           final image = state.images[index];
                           return InkWell(
                             onTap: () {
-                              context.push('/detail-screen/${image.id}');
+                              context.push('/detail-screen/${image.id.toString()}');
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),

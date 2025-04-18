@@ -16,12 +16,19 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  TextEditingController textEditingController = TextEditingController();
 
   @override
   void initState() {
-    widget.detailScreenViewModel.getImageByIdUseCase(widget.id);
     super.initState();
+    widget.detailScreenViewModel.getImageByIdUseCase(widget.id);
+  }
+
+  @override
+  void didUpdateWidget(covariant DetailScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.id != widget.id) {
+      widget.detailScreenViewModel.getImageByIdUseCase(widget.id);
+    }
   }
 
   @override
@@ -38,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   final state = widget.detailScreenViewModel.state;
                   if (state.isLoading == true) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (state.image.previewImageUrl.isEmpty) {
+                  } else if (state.image == null) {
                     return Text('이미지 정보 없음');
                   } else {
                     return Column(
@@ -47,23 +54,19 @@ class _DetailScreenState extends State<DetailScreen> {
                           height: 200,
                           width: double.infinity,
                           child: Image.network(
-                            widget
-                                .detailScreenViewModel
-                                .state
-                                .image
-                                .previewImageUrl,
+                          state.image!.largeImageUrl,
                             fit: BoxFit.cover,
                           ),
                         ),
                         SizedBox(height: 20),
                         Text(
-                          '${state.image.user}님의 이미지',
+                          '${state.image?.user}님의 이미지',
                           style: TextStyle(fontSize: 24),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            state.image.tags,
+                            state.image!.tags,
                             style: TextStyle(fontSize: 18),
                             maxLines: 5,
                           ),

@@ -10,26 +10,33 @@ class DetailScreenViewModel with ChangeNotifier {
   DetailScreenViewModel({required GetImageByIdUseCase getImageByIdUseCase})
     : _getImageByIdUseCase = getImageByIdUseCase;
 
-  DetailScreenState _state = const DetailScreenState();
+  DetailScreenState _state =  DetailScreenState();
 
   DetailScreenState get state => _state;
 
-  Image get images => state.image;
+  // Image get image => state.image;
+  //
+  // bool get isLoading => state.isLoading;
 
-  bool get isLoading => state.isLoading;
-
-  void getImageByIdUseCase(int id) async {
+  Future<void> getImageByIdUseCase(int id) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     final result = await _getImageByIdUseCase.execute(id);
-    switch (result) {
-      case Success(:final data):
-        print('✅ 받은 이미지 URL: ${data.largeImageUrl}');
-        _state = _state.copyWith(isLoading: false, image: data); // ✅ 실제 이미지로 세팅
-      case Error():
-        _state = _state.copyWith(isLoading: false); // ✅ 에러 처리도 완료
+    if (result is Success<List<Image>, String>) {
+      _state = _state.copyWith(image: result.data.first, isLoading: false);
+    } else if (result is Error<List<Image>, String>) {
+      _state = _state.copyWith(
+        isLoading: false,
+      );
     }
+
+
     notifyListeners();
   }
+
+
+
 }
+
+

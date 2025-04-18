@@ -6,17 +6,7 @@ part 'detail_screen_state.freezed.dart';
 @freezed
 abstract class DetailScreenState with _$DetailScreenState {
   const factory DetailScreenState({
-    @Default(
-      Image(
-        id: 0,
-        user: 'user',
-        pageURL: 'pageURL',
-        tags: 'tags',
-        previewImageUrl: 'previewImageUrl',
-        largeImageUrl: 'largeImageUrl',
-      ),
-    )
-    Image image,
+    Image? image,
     @Default(false) bool isLoading,
   }) = _DetailScreenState;
 }

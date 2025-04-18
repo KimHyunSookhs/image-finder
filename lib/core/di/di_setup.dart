@@ -21,7 +21,6 @@ void diSetUP() {
   //ViewModel GetIt
   getIt.registerFactory<SearchScreenViewModel>(
         () => SearchScreenViewModel(
-      getImageUseCase: getIt(),
       searchImagesUseCase: getIt(),
     ),
   );

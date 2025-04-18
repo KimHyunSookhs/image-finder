@@ -6,7 +6,6 @@ import 'package:image_finder/domain/use_case/search_images_use_case.dart';
 import 'package:image_finder/presentation/search_screen/search_screen_state.dart';
 
 class SearchScreenViewModel with ChangeNotifier {
-  final GetImageUseCase _getImageUseCase;
   final SearchImagesUseCase _searchImagesUseCase;
 
 
@@ -20,22 +19,23 @@ class SearchScreenViewModel with ChangeNotifier {
 
   String? get errorMessage => state.errorMessage;
 
-  void getImageUseCase() async {
-    _state = state.copyWith(isLoading: true, errorMessage: null);
-    notifyListeners();
-
-    final result = await _getImageUseCase.execute();
-    switch (result) {
-      case Success<List<Image>, String>():
-        _state = _state.copyWith(isLoading: false, images: result.data);
-      case Error<List<Image>, String>():
-        _state = _state.copyWith(isLoading: true, errorMessage: result.error);
-    }
-    notifyListeners();
-  }
+  // void getImageUseCase() async {
+  //   _state = state.copyWith(isLoading: true, errorMessage: null);
+  //   notifyListeners();
+  //
+  //   final result = await _getImageUseCase.execute();
+  //   switch (result) {
+  //     case Success<List<Image>, String>():
+  //       _state = _state.copyWith(isLoading: false, images: result.data);
+  //     case Error<List<Image>, String>():
+  //       _state = _state.copyWith(isLoading: true, errorMessage: result.error);
+  //   }
+  //   notifyListeners();
+  // }
 
   void searchImageUseCase(String query) async {
-    _state = state.copyWith(isLoading: true, errorMessage: null);
+
+    _state = state.copyWith(isLoading: true, errorMessage: '',currentKeyword: query);
     notifyListeners();
 
     final result = await _searchImagesUseCase.execute(query);
@@ -50,8 +50,6 @@ class SearchScreenViewModel with ChangeNotifier {
   }
 
    SearchScreenViewModel({
-    required GetImageUseCase getImageUseCase,
     required SearchImagesUseCase searchImagesUseCase,
-  }) : _getImageUseCase = getImageUseCase,
-       _searchImagesUseCase = searchImagesUseCase;
+  }) :        _searchImagesUseCase = searchImagesUseCase;
 }

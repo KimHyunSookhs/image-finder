@@ -19,7 +19,7 @@ final router = GoRouter(
     GoRoute(
       path: Routes.searchScreen,
       builder: (context, state) {
-        final viewModel = SearchScreenViewModel(getImageUseCase: getIt(), searchImagesUseCase: getIt());
+        final viewModel = SearchScreenViewModel( searchImagesUseCase: getIt());
         return SearchScreen(screenViewModel: viewModel);
       },
     ),

@@ -30,15 +30,14 @@ class ImageDataSourceImpl implements ImageDataSource {
   Future<ImageDto> getImagesById(int id) async {
     final response = await http.get(Uri.parse(baseUrl));
 
-    try {
+    if(response.statusCode == 200) {
       final List decodedData = jsonDecode(response.body)['hits'];
       final List<ImageDto> images =
           decodedData.map((e) => ImageDto.fromJson(e)).toList();
 
-      final result = images.firstWhere((element) => element.id == id);
-      return result;
-    } catch (e) {
-      return throw Exception(e);
+      return images.first;
+    } else {
+      throw Exception('error by id');
     }
   }
 
@@ -46,13 +45,12 @@ class ImageDataSourceImpl implements ImageDataSource {
   Future<List<ImageDto>> searchImages(String query) async {
     final response = await http.get(Uri.parse('$baseUrl&q=$query'));
 
-    try {
-      final List decodedData = jsonDecode(response.body)['hits'];
-      final List<ImageDto> images =
-          decodedData.map((e) => ImageDto.fromJson(e)).toList();
-      return images;
-    } catch (e) {
-      return throw Exception(e);
+    if(response.statusCode == 200) {
+      final Map<String ,dynamic> jsonResponse = json.decode(response.body);
+      final List decodedData = jsonResponse['hits'];
+      return decodedData.map((e) => ImageDto.fromJson(e)).toList();
+    } else {
+       throw Exception('error by query');
     }
   }
 

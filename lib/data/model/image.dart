@@ -4,6 +4,7 @@ part 'image.freezed.dart';
 part 'image.g.dart';
 
 @freezed
+@JsonSerializable(explicitToJson: true)
 abstract class Image with _$Image {
   const factory Image({
     required int id,

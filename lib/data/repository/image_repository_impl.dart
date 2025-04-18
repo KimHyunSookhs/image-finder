@@ -10,36 +10,19 @@ class ImageRepositoryImpl implements ImageRepository {
   ImageRepositoryImpl({required ImageDataSource imageDataSource})
     : _imageDataSource = imageDataSource;
 
-  @override
-  Future<Result<List<Image>, String>> getImages() async {
-    try {
-      final imagesList = await _imageDataSource.getImages();
-      final image = imagesList.map((e) => e.toImage()).toList();
-      return Result.success(image);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
-  }
 
   @override
-  Future<Result<Image, String>> getImagesById(int id) async {
-    try {
+  Future<Image> getImagesById(int id) async {
       final imageDto = await _imageDataSource.getImagesById(id);
       final image = imageDto.toImage();
-      return Result.success(image);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
+      return image;
   }
 
   @override
-  Future<Result<List<Image>, String>> searchImages(String query) async {
-    try {
+  Future<List<Image>> searchImages(String query) async {
       final imageDto = await _imageDataSource.searchImages(query);
       final image = imageDto.map((e) => e.toImage()).toList();
-      return Result.success(image);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
+      return image;
+
   }
 }

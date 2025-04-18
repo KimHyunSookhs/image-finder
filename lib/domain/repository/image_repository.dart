@@ -1,10 +1,8 @@
-import 'package:image_finder/core/result/result.dart';
+
 import 'package:image_finder/data/model/image.dart';
 
 abstract interface class ImageRepository {
-  Future<Result<List<Image>, String>> getImages();
+  Future<Image> getImagesById(int id);
 
-  Future<Result<Image, String>> getImagesById(int id);
-
-  Future<Result<List<Image>, String>> searchImages(String query);
+  Future<List<Image>>  searchImages(String query);
 }

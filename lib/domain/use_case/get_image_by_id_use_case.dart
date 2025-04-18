@@ -8,8 +8,8 @@ class GetImageByIdUseCase {
   GetImageByIdUseCase({required ImageRepository imageRepository})
     : _imageRepository = imageRepository;
 
-  Future<Result<Image, String>> execute(int id) async {
-    print('이미지 ${id}');
-    return await _imageRepository.getImagesById(id);
+  Future<Result<List<Image>, String>> execute(int id) async {
+    final result =  await _imageRepository.getImagesById(id);
+    return Result.success([result]);
   }
 }
