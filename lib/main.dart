@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_finder/core/di/di_setup.dart';
 import 'package:image_finder/core/routing/router.dart';
 
-void main() {
+void main()async {
+  diSetUP();
   runApp(const ImageFinder());
 }
 

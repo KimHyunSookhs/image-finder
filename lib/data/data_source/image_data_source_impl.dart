@@ -42,32 +42,32 @@ class ImageDataSourceImpl implements ImageDataSource {
     }
   }
 
-  // @override
-  // Future<List<ImageDto>> searchImages(String query) async {
-  //   final response = await http.get(Uri.parse('$baseUrl&q=$query'));
-  //
-  //   try {
-  //     final List decodedData = jsonDecode(response.body)['hits'];
-  //     final List<ImageDto> images =
-  //         decodedData.map((e) => ImageDto.fromJson(e)).toList();
-  //     return images;
-  //   } catch (e) {
-  //     return throw Exception(e);
-  //   }
-  // }
-
   @override
   Future<List<ImageDto>> searchImages(String query) async {
-    final response = await http.get(Uri.parse(baseUrl));
+    final response = await http.get(Uri.parse('$baseUrl&q=$query'));
+
     try {
       final List decodedData = jsonDecode(response.body)['hits'];
       final List<ImageDto> images =
           decodedData.map((e) => ImageDto.fromJson(e)).toList();
-      final result =
-          images.where((element) => element.tags!.contains(query)).toList();
-      return result;
+      return images;
     } catch (e) {
       return throw Exception(e);
     }
   }
+
+  // @override
+  // Future<List<ImageDto>> searchImages(String query) async {
+  //   final response = await http.get(Uri.parse(baseUrl));
+  //   try {
+  //     final List decodedData = jsonDecode(response.body)['hits'];
+  //     final List<ImageDto> images =
+  //         decodedData.map((e) => ImageDto.fromJson(e)).toList();
+  //     final result =
+  //         images.where((element) => element.tags!.contains(query)).toList();
+  //     return result;
+  //   } catch (e) {
+  //     return throw Exception(e);
+  //   }
+  // }
 }

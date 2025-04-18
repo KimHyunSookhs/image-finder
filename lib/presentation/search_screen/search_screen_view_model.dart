@@ -9,10 +9,6 @@ class SearchScreenViewModel with ChangeNotifier {
   final GetImageUseCase _getImageUseCase;
   final SearchImagesUseCase _searchImagesUseCase;
 
-  SearchScreenViewModel(
-    this._searchImagesUseCase, {
-    required GetImageUseCase getImageUseCase,
-  }) : _getImageUseCase = getImageUseCase;
 
   SearchScreenState _state = const SearchScreenState();
 
@@ -52,4 +48,10 @@ class SearchScreenViewModel with ChangeNotifier {
     }
     notifyListeners();
   }
+
+   SearchScreenViewModel({
+    required GetImageUseCase getImageUseCase,
+    required SearchImagesUseCase searchImagesUseCase,
+  }) : _getImageUseCase = getImageUseCase,
+       _searchImagesUseCase = searchImagesUseCase;
 }

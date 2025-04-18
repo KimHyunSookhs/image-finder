@@ -11,22 +11,15 @@ import 'package:image_finder/presentation/detail_screen/detail_screen_view_model
 import 'package:image_finder/presentation/search_screen/search_screen.dart';
 import 'package:image_finder/presentation/search_screen/search_screen_view_model.dart';
 
+import '../di/di_setup.dart';
+
 final router = GoRouter(
   initialLocation: Routes.searchScreen,
   routes: [
     GoRoute(
       path: Routes.searchScreen,
       builder: (context, state) {
-        final viewModel = SearchScreenViewModel(
-          SearchImagesUseCase(
-            ImageRepositoryImpl(imageDataSource: ImageDataSourceImpl()),
-          ),
-          getImageUseCase: GetImageUseCase(
-            imageRepository: ImageRepositoryImpl(
-              imageDataSource: ImageDataSourceImpl(),
-            ),
-          ),
-        );
+        final viewModel = SearchScreenViewModel(getImageUseCase: getIt(), searchImagesUseCase: getIt());
         return SearchScreen(screenViewModel: viewModel);
       },
     ),
@@ -42,13 +35,7 @@ final router = GoRouter(
         if (id == null) {
           return const Scaffold(body: Center(child: Text('ID 형식이 잘못되었습니다')));
         }
-        final viewModel = DetailScreenViewModel(
-          getImageByIdUseCase: GetImageByIdUseCase(
-            imageRepository: ImageRepositoryImpl(
-              imageDataSource: ImageDataSourceImpl(),
-            ),
-          ),
-        );
+        final viewModel = DetailScreenViewModel(getImageByIdUseCase: getIt());
         return DetailScreen(detailScreenViewModel: viewModel, id: id);
       },
     ),
