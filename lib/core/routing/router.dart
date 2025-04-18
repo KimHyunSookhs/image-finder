@@ -5,6 +5,7 @@ import 'package:image_finder/data/data_source/image_data_source_impl.dart';
 import 'package:image_finder/data/repository/image_repository_impl.dart';
 import 'package:image_finder/domain/use_case/get_image_by_id_use_case.dart';
 import 'package:image_finder/domain/use_case/get_image_use_case.dart';
+import 'package:image_finder/domain/use_case/search_images_use_case.dart';
 import 'package:image_finder/presentation/detail_screen/detail_screen.dart';
 import 'package:image_finder/presentation/detail_screen/detail_screen_view_model.dart';
 import 'package:image_finder/presentation/search_screen/search_screen.dart';
@@ -17,6 +18,9 @@ final router = GoRouter(
       path: Routes.searchScreen,
       builder: (context, state) {
         final viewModel = SearchScreenViewModel(
+          SearchImagesUseCase(
+            ImageRepositoryImpl(imageDataSource: ImageDataSourceImpl()),
+          ),
           getImageUseCase: GetImageUseCase(
             imageRepository: ImageRepositoryImpl(
               imageDataSource: ImageDataSourceImpl(),

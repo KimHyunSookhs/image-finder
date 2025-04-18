@@ -1,5 +1,5 @@
 import 'package:image_finder/core/result/result.dart';
-import 'package:image_finder/data/data_source/image_data_source.dart';
+import 'package:image_finder/data/data_source/data_source.dart';
 import 'package:image_finder/data/mapper/image_mapper.dart';
 import 'package:image_finder/data/model/image.dart';
 import 'package:image_finder/domain/repository/image_repository.dart';
@@ -26,6 +26,17 @@ class ImageRepositoryImpl implements ImageRepository {
     try {
       final imageDto = await _imageDataSource.getImagesById(id);
       final image = imageDto.toImage();
+      return Result.success(image);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
+
+  @override
+  Future<Result<List<Image>, String>> searchImages(String query) async {
+    try {
+      final imageDto = await _imageDataSource.searchImages(query);
+      final image = imageDto.map((e) => e.toImage()).toList();
       return Result.success(image);
     } catch (e) {
       return Result.error(e.toString());

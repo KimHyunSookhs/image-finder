@@ -12,7 +12,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController queryTextController = TextEditingController();
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    queryTextController.dispose();
     super.dispose();
   }
 
@@ -34,35 +34,47 @@ class _SearchScreenState extends State<SearchScreen> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Column(
-              children: [
-                TextField(
-                  controller: textEditingController,
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(3),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: Colors.green),
+            child: ListenableBuilder(
+              listenable: widget.screenViewModel,
+              builder: (context, child) {
+                final state = widget.screenViewModel.state;
+                return Column(
+                  children: [
+                    TextField(
+                      controller: queryTextController,
+                      onSubmitted: (value) {
+                        widget.screenViewModel.searchImageUseCase(
+                          queryTextController.text,
+                        );
+                      },
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.green),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.green),
+                        ),
+                        hintText: 'Search ',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
+                        suffixIcon: GestureDetector(
+                          child: Icon(Icons.search, color: Colors.green),
+                          onTap: () {
+                            widget.screenViewModel.searchImageUseCase(
+                              queryTextController.text,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: Colors.green),
-                    ),
-                    hintText: 'Search ',
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
-                    suffixIcon: Icon(Icons.search, color: Colors.green),
-                  ),
-                ),
-                SizedBox(height: 20),
-                ListenableBuilder(
-                  listenable: widget.screenViewModel,
-                  builder: (context, child) {
-                    final state = widget.screenViewModel.state;
-                    if (state.isLoading == true) {
-                      return CircularProgressIndicator();
-                    } else if (state.isLoading == false) {
-                      return GridView.builder(
+                    SizedBox(height: 20),
+                    if (state.isLoading == true)
+                      CircularProgressIndicator()
+                    else if (state.images.isNotEmpty)
+                      GridView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: state.images.length,
@@ -87,13 +99,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           );
                         },
-                      );
-                    } else {
-                      return Center(child: Text(''));
-                    }
-                  },
-                ),
-              ],
+                      )
+                    else
+                      Center(child: Text('검색 결과가 없습니다')),
+                  ],
+                );
+              },
             ),
           ),
         ),

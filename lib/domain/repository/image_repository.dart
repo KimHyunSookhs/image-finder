@@ -5,4 +5,6 @@ abstract interface class ImageRepository {
   Future<Result<List<Image>, String>> getImages();
 
   Future<Result<Image, String>> getImagesById(int id);
+
+  Future<Result<List<Image>, String>> searchImages(String query);
 }

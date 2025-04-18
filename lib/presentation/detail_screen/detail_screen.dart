@@ -38,18 +38,22 @@ class _DetailScreenState extends State<DetailScreen> {
                   final state = widget.detailScreenViewModel.state;
                   if (state.isLoading == true) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (state.image.largeImageUrl.isEmpty) {
+                  } else if (state.image.previewImageUrl.isEmpty) {
                     return Text('이미지 정보 없음');
                   } else {
                     return Column(
                       children: [
-                        Image.network(
-                          widget
-                              .detailScreenViewModel
-                              .state
-                              .image
-                              .largeImageUrl,
-                          fit: BoxFit.cover,
+                        SizedBox(
+                          height: 200,
+                          width: double.infinity,
+                          child: Image.network(
+                            widget
+                                .detailScreenViewModel
+                                .state
+                                .image
+                                .previewImageUrl,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         SizedBox(height: 20),
                         Text(
